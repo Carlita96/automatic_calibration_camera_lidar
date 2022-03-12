@@ -1,0 +1,42 @@
+<launch>
+    <!-- GAZEBO -->
+    <!-- Define Gazebo Paths -->
+    <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find calibration_camera_lidar)/models"/>
+    <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find calibration_camera_lidar)/models"/>
+
+    <!-- Define parameters for simulation -->
+    <arg name="use_sim_time" default="true"/>
+    <arg name="setup" default="0"/>
+    <arg name="gpu" default="true"/>
+    <arg name="organize_cloud" default="true"/>
+
+    <!-- Open the world -->
+    <include file="$(find calibration_camera_lidar)/launch/worldSetups.launch" >
+        <arg name="setup" value="$(arg setup)" />
+        <arg name="use_sim_time" value="$(arg use_sim_time)" />
+        <arg name="organize_cloud" default="$(arg organize_cloud)"/>
+        <arg name="gpu" default="$(arg gpu)"/>
+    </include>
+
+    <!-- Spawn the example robot -->
+    <node pkg="gazebo_ros" type="spawn_model" name="spawn_model" args="-urdf -param /robot_description -model demo_robot">
+    </node>
+
+    <!-- Start the node for publishing the robot state -->
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+      <param name="publish_frequency" type="double" value="30.0" />
+    </node>
+
+    <!-- CALIBRATION -->
+    <!-- Define parameters for the calibration -->
+    <env name="ROSCONSOLE_CONFIG_FILE" value="$(find calibration_camera_lidar)/config/custom_rosconsole.conf"/>
+    <param name="output_files_irectory" type="string" value="$(env HOME)/Documents/outputFiles/" />
+
+    <!-- Start the node for calibration -->
+    <node name="simulateCalibrateSensors" pkg="calibration_camera_lidar" type="simulateCalibrateSensors"  output="screen"/>
+
+    <!-- RVIZ -->
+    <arg name="rviz" default="true"/>
+    <node if="$(arg rviz)" pkg="rviz" type="rviz" name="$(anon rviz)" respawn="false" output="screen" args="-d $(find calibration_camera_lidar)/rviz_config/simulation.rviz" />
+
+</launch>

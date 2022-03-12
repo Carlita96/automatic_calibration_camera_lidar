@@ -1,0 +1,53 @@
+<launch>
+    <arg name="setup" default="0"/>
+    <arg name="use_sim_time" default="true"/>
+    <arg name="organize_cloud" default="true"/>
+    <arg name="gpu" default="true"/>
+
+    <!-- Setup 0 -->
+    <group if="$(eval arg('setup') == 0)">
+    <param name="spherical_target_gazebo_model_name" type="string" value="spheric_target_setup_0" />
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find calibration_camera_lidar)/worlds/calibration_world_setup_0.world"/>
+        <arg name="gui" value="true"/>
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    </include>
+    <!-- Robot description -->
+    <param name="robot_description" command="$(find xacro)/xacro --inorder 
+        '$(find calibration_camera_lidar)/urdf/sensors.xacro' organize_cloud:=$(arg organize_cloud) gpu:=$(arg gpu)" />
+    <!-- Define parameters for the calibration -->
+    <rosparam command="load" file="$(find calibration_camera_lidar)/config/simulateCalibrationConfig.yaml" />
+    </group>  
+    <!-- Setup 1 -->
+    <group if="$(eval arg('setup') == 1)">
+    <param name="spherical_target_gazebo_model_name" type="string" value="spheric_target_setup_1" />
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find calibration_camera_lidar)/worlds/calibration_world_setup_1.world"/>
+        <arg name="gui" value="true"/>
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    </include>
+    <!-- Robot description -->
+    <param name="robot_description" command="$(find xacro)/xacro --inorder 
+        '$(find calibration_camera_lidar)/urdf/sensors.xacro' organize_cloud:=$(arg organize_cloud) gpu:=$(arg gpu)" />
+    <!-- Define parameters for the calibration -->
+    <rosparam command="load" file="$(find calibration_camera_lidar)/config/simulateCalibrationConfig.yaml" />
+    </group>  
+    <!-- Setup 2 -->
+    <group if="$(eval arg('setup') == 2)">
+    <param name="spherical_target_gazebo_model_name" type="string" value="spheric_target_setup_2" />
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find calibration_camera_lidar)/worlds/calibration_world_setup_2.world"/>
+        <arg name="gui" value="true"/>
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    </include>
+    <!-- Robot description -->
+    <param name="robot_description" command="$(find xacro)/xacro --inorder 
+        '$(find calibration_camera_lidar)/urdf/sensors.xacro' organize_cloud:=$(arg organize_cloud) gpu:=$(arg gpu)" />
+    <!-- Define parameters for the calibration -->
+    <rosparam command="load" file="$(find calibration_camera_lidar)/config/simulateCalibrationConfigSetup2.yaml" />
+    </group>  
+
+</launch>

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<package>
+  <name>calibration_camera_lidar</name>
+  <version>0.0.1</version>
+  <description>
+    calibration is used with Gazebo to simulate a vehicle with camera and LiDAR. Then, calibration both sensors to know their relative position.
+  </description>
+  
+  <maintainer email="carla@salazarnavalon.com">
+    Carla Cristina Salazar Navalon
+  </maintainer>
+  <license>AGCO</license>
+
+  <author email="carla@salazarnavalon.com">Carla Cristina Salazar Navalon</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>nav_msgs</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>  
+  <build_depend>rosbag</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>image_transport</build_depend>
+  <build_depend>message_generation</build_depend>
+  <build_depend>gazebo_ros</build_depend>
+
+  <run_depend>ackermann_msgs</run_depend>
+  <run_depend>vehicle_gazebo</run_depend>
+  <run_depend>vehicle_description</run_depend>
+  <run_depend>controller_manager</run_depend>
+  <run_depend>controller_manager_msgs</run_depend>
+  <run_depend>effort_controllers</run_depend>
+  <run_depend>gazebo_ros</run_depend>
+  <run_depend>joint_state_controller</run_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>tf</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>nav_msgs</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>rosbag</run_depend>
+  <run_depend>image_transport</run_depend>
+  <run_depend>message_runtime</run_depend>
+  <run_depend>gazebo_ros</run_depend>
+
+  <!-- <gazebo_ros plugin_path="${prefix}/../../lib" gazebo_media_path="${prefix}" /> -->
+
+  <export>
+    <architecture_independent/>
+    <rosdoc config="rosdoc.yaml"/>
+  </export>
+</package>

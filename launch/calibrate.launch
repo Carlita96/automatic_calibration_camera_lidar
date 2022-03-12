@@ -1,0 +1,42 @@
+<launch>
+  <!-- Define parameters for the calibration -->
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find calibration)/config/custom_rosconsole.conf"/>
+  <rosparam command="load" file="$(find calibration)/config/calibrationConfig.yaml" />
+  <param name="output_files_irectory" type="string" value="$(env HOME)/Documents/outputFiles/" />
+  <param name="calibration_params_directory" type="string" value="$(find calibration)/calibrationParameters/" />
+
+  <!-- INTRINSIC PARAMETERS -->
+  <arg name="ethRect" default="1"/>
+  <group if="$(eval arg('ethRect') == 0)">
+    <param name="calibration/imageTopicName" type="string" value="/cam_rear/image_raw"/>
+    <node name="publishCameraInfo" pkg="calibration" type="publishCameraInfo"  output="screen"/>
+  </group>
+  <group if="$(eval arg('ethRect') == 1)">
+    <param name="calibration/imageTopicName" value="/cam_rear/image_rect_color"/>
+    <arg name="input_camera_name" default="cam_rear" />
+    <arg name="scale" default="1.0" />
+    <arg name="calib_path" default="$(find calibration)/config/cameraIntrinsicParameters.yaml"/>
+
+    <node name="image_undistort_node" pkg="image_undistort" type="image_undistort_node" output="screen">
+        <param name="input_camera_namespace" type="string" value="$(arg input_camera_name)"/>
+        <param name="input_camera_info_from_ros_params" value = "true"/>
+        <param name="scale" value="$(arg scale)"/>
+        <param name="output_camera_info_source" value="auto_generated"/>
+        <rosparam file="$(arg calib_path)"/>
+        <param name="process_image" value="true"/>
+        <remap from="input/image" to="$(arg input_camera_name)/image_raw"/>
+        <param name="output_frame" value="cam_rear"/>
+        <param name="output_camera_namespace" value="$(arg input_camera_name)"/>
+        <param name="publish_tf" value="false"/>
+        <remap from="output/image" to="$(arg input_camera_name)/image_rect_color"/>
+    </node>
+  </group>
+
+  <!-- CALIBRATION -->
+  <!-- Start the node for calibration -->
+  <node name="calibrateSensors" pkg="calibration" type="calibrateSensors"  output="screen"/>
+
+  <!-- RVIZ -->
+  <arg name="rviz" default="true"/>
+  <node if="$(arg rviz)" pkg="rviz" type="rviz" name="$(anon rviz)" respawn="false" output="screen" args="-d $(find calibration)/rviz_config/calibration.rviz" />
+</launch>

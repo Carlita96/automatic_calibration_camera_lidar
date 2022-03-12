@@ -1,0 +1,28 @@
+calibration:
+  # Topics 
+  pointcloudTopicName : "/velodyne_points"
+  imageTopicName : "/cam_rear/image_raw"
+  cameraInfoTopicName : "/cam_rear/camera_info"
+  # Point cloud
+  pointcloud:
+    # Segment
+    segment:
+      maxDepthDiffSegment: 0.01
+    # Edge
+    edges:
+      minNumber : 50
+  # Image
+  image:
+    # Params for median blur
+    medianBlur:
+      kSize : 5
+    # Smooth edge
+    smoothEdge:
+      kSizeEdgeCalculation : 4
+      kSizeSmoothEdge : 10
+      alpha : 0.333
+      gamma : 0.98
+  # Miscalibration
+  kSizeCloudPointCalibrationRate : 0
+  consecutiveMiscalibrationsAllowed : 3
+  minCalibrationRate : 0.25

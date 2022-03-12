@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <model name="woodBox">
+    <static>true</static>
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>1.0 1.0 1.0</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+	       <geometry>
+          <box>
+            <size>1.0 1.0 1.0</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://materials/scripts/wood.material</uri>
+            <uri>model://materials/textures</uri>
+            <name>vrc/wood</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

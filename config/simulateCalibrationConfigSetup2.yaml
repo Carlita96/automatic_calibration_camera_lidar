@@ -1,0 +1,84 @@
+calibration:
+    # Analysis of data
+    analysisData:
+      testing: true
+      seeProjectPointCloudToImage: false
+      calibrationParametersOutput: true
+      numberOfCalibrations: 10
+      accuracySensorsCenterSphericalTarget: true
+    #Image viewer
+    showImageViewer: false
+    # Target
+    sphericalTarget:
+      radius: 0.5
+    # Calibration params
+    numberPositions: 300
+    # Topics 
+    pointcloudTopicName : "/velodyne_points"
+    imageTopicName : "/camera_cam_rear/image_raw"
+    cameraInfoTopicName : "/camera_cam_rear/camera_info"
+    # Params for treating velodyne data
+    pointCloud:
+      # Params for clustering
+      cluster:
+        maxDepthDiffSegment: 0.2
+        maxDistanceCenterSegment: 1.0   
+      # Params for normal estimation
+      normalEstimation:
+        kSearch : 10
+      # Params for sphere segmentation
+      sphereSegmentation:
+        minNumberPoints : 20
+        normalDistanceWeight : 0.1
+        distanceThreshold : 0.07
+        maxIterations : 10000
+        thresholdRadius : 0.02
+      # Params for position filter of sphere
+      positionFilter:
+        minValue : 0.5
+        maxValue : 10.0
+    # Params for treating image data
+    image:
+      # Screen projection in sphere
+      sphericalWarper:
+        sphereRadius : 900
+      # Params for median blur
+      medianBlur:
+        kSize : 5
+      # Canny edges
+      cannyEdges:
+        minThreshold : 20
+        maxThreshold : 60
+        kSizeSobel : 7
+      # Params for Hough Circles
+      houghCircles:
+        accumulatorResolution : 2
+        minimumDistanceBetweenCircles : 1
+        cannyHighThreshold : 80
+        minimumVotes : 80
+        minDepth : 4.0
+        maxDepth : 7.0
+      # Get best circles
+      optimizeCircles:
+        pixelThresholdHorizontalEdge : 100
+        minIntensityPixelsEdgesOptimization : 200
+        mOptimizecirclesNumberPixelAroundRadiusEdgesOptimization : 4
+        minIntensityPixel : 150
+        minMSP : 5.0 
+        numberPixelAroundRadiusEdgesBest : 3
+        minRateSuperPixelInCircleByAround : 0.25
+    # Params for calibration
+    calibration:
+      # Params for removing outliers in the list
+      outlierRemovalList:
+        kTimeStdDev : 2.0
+      # Params for several calibrations 3D-3D
+      severalCalibration3Dto3D:
+        numberOfCalibration: 300
+        observationsPerCalibration: 100
+        maxDistanceErrorCalibrationForInliers: 0.1
+      # Params for several calibrations 3D-2D
+      severalCalibration3Dto2D:
+        numberOfCalibration: 2000
+        observationsPerCalibration: 50
+        maxDistanceErrorCalibrationForInliers: 0.005

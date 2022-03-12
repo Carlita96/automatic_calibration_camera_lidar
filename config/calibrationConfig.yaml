@@ -1,0 +1,81 @@
+calibration:
+    # Analysis of data
+    analysisData:
+      testing: true
+      seeProjectPointCloudToImage: false
+      calibrationParametersOutput: true
+      saveObservations: true
+    # Target
+    sphericalTarget:
+      radius: 0.275
+    # Calibration params
+    numberPositions: 300
+    # Topics 
+    pointcloudTopicName : "/velodyne_points"
+    imageTopicName : "/cam_rear/image_raw"
+    cameraInfoTopicName : "/cam_rear/camera_info"
+    # Params for treating velodyne data
+    pointCloud:
+      # Params for clustering
+      cluster:
+        maxDepthDiffSegment: 0.05
+        maxDistanceCenterSegment: 0.75   
+        thresholdSegmentPerimeter : 0.5
+      # Params for normal estimation
+      normalEstimation:
+        kSearch : 10
+      # Params for sphere segmentation
+      sphereSegmentation:
+        minNumberPoints : 80
+        normalDistanceWeight : 0.1
+        distanceThreshold : 0.07
+        maxIterations : 10000
+        thresholdRadius : 0.05
+      # Params for position filter of sphere
+      positionFilter:
+        minValue : 1.5
+        maxValue : 8.0
+    # Params for treating image data
+    image:
+      # Screen projection in sphere
+      sphericalWarper:
+        sphereRadius : 1200
+      # Params for median blur
+      medianBlur:
+        kSize : 5
+      # Canny edges
+      cannyEdges:
+        minThreshold : 180
+        maxThreshold : 210
+      # Params for Hough Circles
+      houghCircles:
+        accumulatorResolution : 2
+        minimumDistanceBetweenCircles : 3
+        cannyHighThreshold : 180
+        minimumVotes : 90
+        minDepth : 1.0
+        maxDepth : 7.0
+      # Get best circles
+      optimizeCircles:
+        pixelThresholdHorizontalEdge : 100
+        minIntensityPixelsEdgesOptimization : 200
+        numberPixelsAroundEdgesOptimization : 5
+        minIntensityPixel : 150
+        minMSP : 5.0 
+        numberPixelAroundRadiusEdgesBest : 5
+        minRateSuperPixelInCircleByAround : 0.25
+    # Params for calibration
+    calibration:
+      # Params for removing outliers in the list
+      outlierRemovalList:
+        kTimeStdDev : 2.0
+      # Params for several calibrations 3D-3D
+      severalCalibration3Dto3D:
+        numberOfCalibration: 300
+        observationsPerCalibration: 100
+        maxDistanceErrorCalibrationForInliers: 0.1
+      # Params for several calibrations 3D-2D
+      severalCalibration3Dto2D:
+        numberOfCalibration: 2500
+        observationsPerCalibration: 75
+        maxDistanceErrorCalibrationForInliers: 0.005

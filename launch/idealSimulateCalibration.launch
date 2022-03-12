@@ -1,0 +1,83 @@
+<launch>
+  <!-- GAZEBO -->
+  <!-- Define Gazebo Paths -->
+  <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find calibration)/models"/>
+  <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find calibration)/models"/>
+
+  <!-- Define parameters for simulation -->
+  <arg name="use_sim_time" default="true"/>
+
+  <!-- Open world in Gazebo -->
+  <arg name="setup" default="0"/>
+  <!-- Spawn the example robot -->
+  <arg name="gpu" default="true"/>
+  <arg name="organize_cloud" default="true"/>
+  <!-- Setup 0 -->
+  <group if="$(eval arg('setup') == 0)">
+    <param name="spherical_target_gazebo_model_name" type="string" value="spheric_target_setup_0" />
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="world_name" value="$(find calibration)/worlds/calibration_world_setup_0.world"/>
+      <arg name="gui" value="false"/>
+      <arg name="paused" value="false"/>
+      <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    </include>
+    <!-- Robot description -->
+    <param name="robot_description" command="$(find xacro)/xacro --inorder 
+        '$(find vehicle_description)/urdf/fendt_ideal_9_rear_sensors.xacro' organize_cloud:=$(arg organize_cloud) gpu:=$(arg gpu)" />
+    <!-- Define parameters for the calibration -->
+    <rosparam command="load" file="$(find calibration)/config/simulateCalibrationConfig.yaml" />
+  </group>  
+  <!-- Setup 1 -->
+  <group if="$(eval arg('setup') == 1)">
+    <param name="spherical_target_gazebo_model_name" type="string" value="spheric_target_setup_1" />
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="world_name" value="$(find calibration)/worlds/calibration_world_setup_1.world"/>
+      <arg name="gui" value="false"/>
+      <arg name="paused" value="false"/>
+      <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    </include>
+    <!-- Robot description -->
+    <param name="robot_description" command="$(find xacro)/xacro --inorder 
+        '$(find vehicle_description)/urdf/fendt_300_sensors.xacro' organize_cloud:=$(arg organize_cloud) gpu:=$(arg gpu)" />
+    <!-- Define parameters for the calibration -->
+    <rosparam command="load" file="$(find calibration)/config/simulateCalibrationConfig.yaml" />
+  </group>  
+  <!-- Setup 2 -->
+  <group if="$(eval arg('setup') == 2)">
+    <param name="spherical_target_gazebo_model_name" type="string" value="spheric_target_setup_2" />
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="world_name" value="$(find calibration)/worlds/calibration_world_setup_2.world"/>
+      <arg name="gui" value="false"/>
+      <arg name="paused" value="false"/>
+      <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    </include>
+    <!-- Robot description -->
+    <param name="robot_description" command="$(find xacro)/xacro --inorder 
+        '$(find vehicle_description)/urdf/fendt_ideal_9_sensors.xacro' organize_cloud:=$(arg organize_cloud) gpu:=$(arg gpu)" />
+    <!-- Define parameters for the calibration -->
+    <rosparam command="load" file="$(find calibration)/config/simulateCalibrationConfigSetup2.yaml" />
+  </group>  
+
+  <!-- Spawn the example robot -->
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_model" args="-urdf -param /robot_description -model demo_robot">
+  </node>
+
+  <!-- Start the node for publishing the robot state -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+  <param name="publish_frequency" type="double" value="30.0" />
+  </node>
+
+  <!-- CALIBRATION -->
+  <!-- Define parameters for the calibration -->
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find calibration)/config/custom_rosconsole.conf"/>
+  <param name="output_files_irectory" type="string" value="$(env HOME)/Documents/outputFiles/" />
+  <param name="/calibration/analysisData/timeSyncError" type="double" value="0.0" />
+
+  <!-- Start the node for calibration -->
+  <node name="idealCalibrateSensors" pkg="calibration" type="idealCalibrateSensors"  output="screen"/>
+
+  <!-- RVIZ -->
+  <arg name="rviz" default="false"/>
+  <node if="$(arg rviz)" pkg="rviz" type="rviz" name="$(anon rviz)" respawn="false" output="screen" args="-d $(find calibration)/rviz_config/calibration.rviz" />
+
+</launch>

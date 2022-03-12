@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <model name="concrete_wall">
+    <static>true</static>
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <plane>
+            <normal>1 0 0</normal>
+            <size>200 200</size>
+          </plane>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <cast_shadows>false</cast_shadows>
+	       <geometry>
+          <plane>
+            <normal>1 0 0</normal>
+            <size>200 200</size>
+          </plane>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://materials/scripts/concrete.material</uri>
+            <uri>model://materials/textures</uri>
+            <name>vrc/concrete</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

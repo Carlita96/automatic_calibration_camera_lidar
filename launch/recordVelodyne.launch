@@ -1,0 +1,10 @@
+<launch>
+    <!-- Define parameters for recorder -->
+    <param name="outputDirectory" type="string" value="$(env HOME)/Documents/" />
+    <param name="outputFileName" type="string" value="velodyne" />
+    <param name="topicName" type="string" value="/velodyne_points" />
+    <param name="numberOfMessages" type="int" value="1"/>
+
+    <!-- Record data and save to PCD file -->
+    <node name="pointCloudRecorder" pkg="calibration" type="pointCloudRecorder"  output="screen"/>
+</launch>
